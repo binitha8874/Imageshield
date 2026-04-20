@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ImageShield — Protect & License Your Images</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #050810;
+  --surface: #0d1120;
+  --surface2: #131929;
+  --border: #1e2d4a;
+  --accent: #3b82f6;
+  --accent2: #06b6d4;
+  --gold: #f59e0b;
+  --green: #10b981;
+  --red: #ef4444;
+  --text: #e2e8f0;
+  --muted: #64748b;
+  --glow: rgba(59,130,246,0.18);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+h1,h2,h3,h4{font-family:'Syne',sans-serif}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;background:rgba(5,8,16,0.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.logo{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-links{display:flex;gap:1.5rem;align-items:center}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.9rem;transition:.2s}
+.nav-links a:hover{color:var(--text)}
+.btn{padding:.55rem 1.3rem;border-radius:8px;font-size:.9rem;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;transition:.2s;border:none}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text)}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:#2563eb;transform:translateY(-1px)}
+.btn-sm{padding:.4rem 1rem;font-size:.82rem}
+
+/* ── HERO ── */
+#hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:6rem 2rem 4rem;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 30%,rgba(59,130,246,0.12),transparent 70%)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:60px 60px;opacity:.3}
+.hero-content{position:relative;max-width:780px}
+.badge{display:inline-flex;align-items:center;gap:.5rem;padding:.35rem .9rem;background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.3);border-radius:20px;font-size:.8rem;color:var(--accent);margin-bottom:1.5rem}
+.badge span{width:7px;height:7px;background:var(--accent);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+h1.hero-title{font-size:clamp(2.4rem,6vw,4.2rem);line-height:1.1;font-weight:800;margin-bottom:1.2rem}
+h1.hero-title span{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{color:var(--muted);font-size:1.1rem;line-height:1.7;margin-bottom:2.2rem;max-width:560px;margin-left:auto;margin-right:auto}
+.hero-cta{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.btn-large{padding:.85rem 2rem;font-size:1rem}
+
+/* ── SECTIONS ── */
+section{padding:5rem 2rem}
+.container{max-width:1100px;margin:0 auto}
+.section-label{color:var(--accent);font-size:.8rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem}
+.section-title{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;margin-bottom:1rem}
+.section-sub{color:var(--muted);font-size:1rem;line-height:1.7;max-width:560px}
+
+/* ── FEATURES ── */
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:3rem}
+.feature-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.8rem;transition:.3s;position:relative;overflow:hidden}
+.feature-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));opacity:0;transition:.3s}
+.feature-card:hover{border-color:var(--accent);transform:translateY(-4px)}
+.feature-card:hover::before{opacity:1}
+.feature-icon{width:48px;height:48px;background:rgba(59,130,246,0.12);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:1.2rem}
+.feature-card h3{font-size:1.1rem;margin-bottom:.6rem}
+.feature-card p{color:var(--muted);font-size:.9rem;line-height:1.6}
+
+/* ── PRICING ── */
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:3rem}
+.plan-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2rem;position:relative;transition:.3s}
+.plan-card.popular{border-color:var(--accent);background:linear-gradient(135deg,var(--surface),rgba(59,130,246,0.05))}
+.plan-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:.25rem .9rem;border-radius:20px;font-size:.75rem;font-weight:600}
+.plan-name{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:.4rem}
+.plan-price{font-size:2.2rem;font-weight:800;font-family:'Syne',sans-serif;margin:.8rem 0}
+.plan-price span{font-size:.9rem;font-weight:400;color:var(--muted)}
+.plan-features{list-style:none;margin:1.5rem 0;display:flex;flex-direction:column;gap:.7rem}
+.plan-features li{display:flex;align-items:center;gap:.6rem;font-size:.9rem;color:var(--muted)}
+.plan-features li::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0}
+.plan-card .btn{width:100%;margin-top:1rem;text-align:center;display:block}
+
+/* ── MODAL OVERLAY ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:200;display:none;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px)}
+.overlay.active{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2.5rem;width:100%;max-width:480px;position:relative;animation:slideUp .3s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px}
+.modal-close:hover{background:var(--surface2);color:var(--text)}
+.modal h2{font-size:1.6rem;margin-bottom:.4rem}
+.modal p.sub{color:var(--muted);font-size:.9rem;margin-bottom:2rem}
+.form-group{margin-bottom:1.2rem}
+.form-group label{display:block;font-size:.85rem;font-weight:500;margin-bottom:.5rem;color:var(--text)}
+.form-group input,.form-group select{width:100%;padding:.75rem 1rem;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.9rem;transition:.2s;outline:none}
+.form-group input:focus,.form-group select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(59,130,246,0.1)}
+.form-group input::placeholder{color:var(--muted)}
+.privacy-options{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin-bottom:1.5rem}
+.priv-opt{background:var(--surface2);border:2px solid var(--border);border-radius:10px;padding:.9rem .5rem;text-align:center;cursor:pointer;transition:.2s;user-select:none}
+.priv-opt:hover{border-color:var(--muted)}
+.priv-opt.selected{border-color:var(--accent);background:rgba(59,130,246,0.1)}
+.priv-opt .priv-icon{font-size:1.4rem;margin-bottom:.3rem}
+.priv-opt .priv-label{font-size:.75rem;font-weight:600;font-family:'Syne',sans-serif}
+.priv-opt .priv-desc{font-size:.65rem;color:var(--muted);margin-top:.2rem}
+.otp-inputs{display:flex;gap:.6rem;justify-content:center;margin:1.5rem 0}
+.otp-inputs input{width:48px;height:52px;text-align:center;font-size:1.4rem;font-weight:700;background:var(--surface2);border:2px solid var(--border);border-radius:10px;color:var(--text);outline:none;transition:.2s}
+.otp-inputs input:focus{border-color:var(--accent)}
+.step-indicator{display:flex;align-items:center;gap:.5rem;margin-bottom:2rem}
+.step{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;border:2px solid var(--border);color:var(--muted);transition:.3s}
+.step.active{border-color:var(--accent);color:var(--accent);background:rgba(59,130,246,0.1)}
+.step.done{border-color:var(--green);background:var(--green);color:#fff}
+.step-line{flex:1;height:2px;background:var(--border)}
+.step-line.done{background:var(--green)}
+.upload-zone{border:2px dashed var(--border);border-radius:12px;padding:2rem;text-align:center;cursor:pointer;transition:.3s;margin-bottom:1.2rem}
+.upload-zone:hover{border-color:var(--accent);background:rgba(59,130,246,0.04)}
+.upload-zone .upload-icon{font-size:2.5rem;margin-bottom:.7rem}
+.upload-zone p{color:var(--muted);font-size:.88rem}
+.upload-zone p strong{color:var(--text)}
+.alert{padding:.9rem 1.1rem;border-radius:10px;font-size:.88rem;margin-bottom:1rem;display:flex;align-items:center;gap:.6rem}
+.alert-success{background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);color:var(--green)}
+.alert-error{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:var(--red)}
+.alert-info{background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.3);color:var(--accent)}
+
+/* ── DASHBOARD ── */
+#dashboard{display:none;min-height:100vh;padding-top:64px}
+.dash-layout{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 64px)}
+.sidebar{background:var(--surface);border-right:1px solid var(--border);padding:2rem 1.2rem;display:flex;flex-direction:column;gap:.3rem;position:sticky;top:64px;height:calc(100vh - 64px);overflow-y:auto}
+.sidebar-label{color:var(--muted);font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:.5rem .8rem;margin-top:.8rem}
+.side-item{display:flex;align-items:center;gap:.8rem;padding:.7rem .9rem;border-radius:10px;cursor:pointer;font-size:.9rem;color:var(--muted);transition:.2s;text-decoration:none}
+.side-item:hover{background:var(--surface2);color:var(--text)}
+.side-item.active{background:rgba(59,130,246,0.12);color:var(--accent)}
+.side-item .icon{font-size:1.1rem;width:20px;text-align:center}
+.dash-main{padding:2.5rem;overflow-y:auto}
+.dash-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2.5rem;flex-wrap:gap}
+.dash-header h2{font-size:1.8rem}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.2rem;margin-bottom:2.5rem}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.4rem;position:relative;overflow:hidden}
+.stat-card::after{content:'';position:absolute;top:-20px;right:-20px;width:80px;height:80px;background:var(--accent);opacity:.05;border-radius:50%}
+.stat-label{color:var(--muted);font-size:.8rem;font-weight:500;margin-bottom:.4rem}
+.stat-val{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800}
+.stat-change{font-size:.78rem;margin-top:.3rem}
+.stat-change.up{color:var(--green)}
+.stat-change.down{color:var(--red)}
+.image-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.2rem;margin-top:1.5rem}
+.img-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:.3s}
+.img-card:hover{transform:translateY(-3px);border-color:var(--accent)}
+.img-thumb{height:160px;background:linear-gradient(135deg,var(--surface2),var(--surface));display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;overflow:hidden}
+.img-thumb img{width:100%;height:100%;object-fit:cover}
+.img-badge{position:absolute;top:.6rem;right:.6rem;padding:.25rem .6rem;border-radius:6px;font-size:.7rem;font-weight:700}
+.badge-public{background:rgba(16,185,129,0.15);color:var(--green);border:1px solid rgba(16,185,129,0.3)}
+.badge-private{background:rgba(239,68,68,0.15);color:var(--red);border:1px solid rgba(239,68,68,0.3)}
+.badge-restricted{background:rgba(245,158,11,0.15);color:var(--gold);border:1px solid rgba(245,158,11,0.3)}
+.img-info{padding:1rem}
+.img-info h4{font-size:.95rem;margin-bottom:.3rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.img-info .img-meta{color:var(--muted);font-size:.78rem;display:flex;align-items:center;justify-content:space-between}
+.img-actions{display:flex;gap:.5rem;padding:.8rem 1rem;border-top:1px solid var(--border)}
+.img-actions button{flex:1;padding:.4rem;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--muted);font-size:.78rem;cursor:pointer;transition:.2s;font-family:'DM Sans',sans-serif}
+.img-actions button:hover{color:var(--text);border-color:var(--accent)}
+.license-key-box{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:1rem;display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin-top:.8rem}
+.license-key-box code{font-family:monospace;font-size:.85rem;color:var(--accent2);word-break:break-all}
+.copy-btn{background:var(--accent);border:none;color:#fff;padding:.3rem .7rem;border-radius:6px;font-size:.75rem;cursor:pointer;font-family:'DM Sans',sans-serif;flex-shrink:0}
+.tab-row{display:flex;gap:.5rem;margin-bottom:2rem;border-bottom:1px solid var(--border);padding-bottom:.8rem}
+.tab{background:none;border:none;color:var(--muted);font-size:.9rem;padding:.5rem 1rem;cursor:pointer;border-radius:8px;font-family:'DM Sans',sans-serif;transition:.2s}
+.tab.active{background:rgba(59,130,246,0.12);color:var(--accent)}
+.table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th{background:var(--surface2);padding:.9rem 1.2rem;text-align:left;color:var(--muted);font-weight:500;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em}
+td{padding:.9rem 1.2rem;border-top:1px solid var(--border);color:var(--text)}
+tr:hover td{background:rgba(255,255,255,0.02)}
+.status-dot{display:inline-flex;align-items:center;gap:.4rem}
+.status-dot::before{content:'';width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.status-active::before{background:var(--green)}
+.status-pending::before{background:var(--gold)}
+.status-revoked::before{background:var(--red)}
+.progress-bar{height:6px;background:var(--surface2);border-radius:3px;overflow:hidden;margin-top:.3rem}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:.3s}
+.notification-dot{width:8px;height:8px;background:var(--red);border-radius:50%;position:absolute;top:6px;right:6px}
+.empty-state{text-align:center;padding:3rem;color:var(--muted)}
+.empty-state .empty-icon{font-size:3rem;margin-bottom:1rem}
+.empty-state p{font-size:.95rem}
+
+/* ── FOOTER ── */
+footer{background:var(--surface);border-top:1px solid var(--border);padding:3rem 2rem;text-align:center;color:var(--muted);font-size:.85rem}
+
+/* ── UTILS ── */
+.flex{display:flex}.items-center{align-items:center}.gap-1{gap:.5rem}.gap-2{gap:1rem}.justify-between{justify-content:space-between}
+.text-muted{color:var(--muted)}.text-accent{color:var(--accent)}.text-green{color:var(--green)}.text-gold{color:var(--gold)}
+.mt-1{margin-top:.5rem}.mt-2{margin-top:1rem}.mt-3{margin-top:1.5rem}.mb-2{margin-bottom:1rem}
+.w-full{width:100%}.hidden{display:none!important}
+.spinner{width:20px;height:20px;border:2px solid rgba(255,255,255,0.2);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+.chip{display:inline-flex;align-items:center;gap:.3rem;padding:.2rem .6rem;border-radius:5px;font-size:.72rem;font-weight:600}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════ LANDING PAGE ═══ -->
+<div id="landing">
+<nav>
+  <div class="logo">⬡ ImageShield</div>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#how">How it works</a>
+    <a href="#pricing">Pricing</a>
+    <button class="btn btn-ghost btn-sm" onclick="showLogin()">Log in</button>
+    <button class="btn btn-primary btn-sm" onclick="showRegister()">Get Started</button>
+  </div>
+</nav>
+
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="badge"><span></span>Blockchain-grade image protection</div>
+    <h1 class="hero-title">Protect &amp; License<br>Your <span>Digital Images</span><br>with Confidence</h1>
+    <p class="hero-sub">Register your images with a cryptographic licence key, control public/private/restricted visibility, and prevent unauthorised use across the internet.</p>
+    <div class="hero-cta">
+      <button class="btn btn-primary btn-large" onclick="showRegister()">Register an Image Free →</button>
+      <button class="btn btn-ghost btn-large" onclick="showLogin()">Sign in to Dashboard</button>
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="container">
+    <p class="section-label">Core capabilities</p>
+    <h2 class="section-title">Everything you need to own your imagery</h2>
+    <p class="section-sub">A complete platform for individual creators, brands, and enterprises to register, track, and enforce image rights.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🔐</div>
+        <h3>Licence Key System</h3>
+        <p>Every registered image receives a unique cryptographic licence key tied to your Gmail and phone number for ironclad ownership proof.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">👁️</div>
+        <h3>Three Visibility Modes</h3>
+        <p>Choose Public (open attribution), Private (owner only), or Restricted (approved parties only). Change anytime.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌐</div>
+        <h3>Internet-Wide Scanning</h3>
+        <p>Our crawler detects unauthorised use of your images across social media, websites, and stock platforms automatically.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📱</div>
+        <h3>2FA Verification</h3>
+        <p>OTP sent to your registered Gmail and phone confirms identity before issuing or transferring any licence key.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Analytics Dashboard</h3>
+        <p>Track views, licence requests, detected violations, and revenue from licensing all in one clean dashboard.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚖️</div>
+        <h3>DMCA Takedown Generator</h3>
+        <p>Auto-generate DMCA notices for detected violations with one click, complete with your licence key as evidence.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="container">
+    <p class="section-label">How it works</p>
+    <h2 class="section-title">Three steps to protect your image</h2>
+    <div class="features-grid" style="margin-top:3rem">
+      <div class="feature-card" style="text-align:center">
+        <div style="font-size:2.5rem;margin-bottom:1rem">1️⃣</div>
+        <h3>Register</h3>
+        <p>Enter your Gmail and phone number. Verify with OTP. Upload your image and choose a visibility setting.</p>
+      </div>
+      <div class="feature-card" style="text-align:center">
+        <div style="font-size:2.5rem;margin-bottom:1rem">2️⃣</div>
+        <h3>Lock</h3>
+        <p>Receive your unique 32-character licence key. Your image is fingerprinted and registered in our global database.</p>
+      </div>
+      <div class="feature-card" style="text-align:center">
+        <div style="font-size:2.5rem;margin-bottom:1rem">3️⃣</div>
+        <h3>Monitor</h3>
+        <p>Dashboard alerts you when your image is found online. Share the key with approved parties or issue takedowns.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="container">
+    <p class="section-label">Pricing</p>
+    <h2 class="section-title">Simple, transparent plans</h2>
+    <div class="pricing-grid">
+      <div class="plan-card">
+        <div class="plan-name">Free</div>
+        <div style="color:var(--muted);font-size:.85rem">For individuals starting out</div>
+        <div class="plan-price">₹0 <span>/ month</span></div>
+        <ul class="plan-features">
+          <li>5 images registered</li>
+          <li>Public & Private modes</li>
+          <li>Basic OTP verification</li>
+          <li>Dashboard access</li>
+        </ul>
+        <button class="btn btn-ghost" onclick="showRegister()">Get started</button>
+      </div>
+      <div class="plan-card popular">
+        <div class="plan-badge">Most Popular</div>
+        <div class="plan-name">Pro</div>
+        <div style="color:var(--muted);font-size:.85rem">For creators &amp; small teams</div>
+        <div class="plan-price">₹499 <span>/ month</span></div>
+        <ul class="plan-features">
+          <li>500 images registered</li>
+          <li>All 3 visibility modes</li>
+          <li>Internet-wide scanning</li>
+          <li>DMCA generator</li>
+          <li>Analytics &amp; reports</li>
+        </ul>
+        <button class="btn btn-primary" onclick="showRegister()">Start free trial</button>
+      </div>
+      <div class="plan-card">
+        <div class="plan-name">Enterprise</div>
+        <div style="color:var(--muted);font-size:.85rem">For agencies &amp; brands</div>
+        <div class="plan-price">₹2499 <span>/ month</span></div>
+        <ul class="plan-features">
+          <li>Unlimited images</li>
+          <li>Bulk registration API</li>
+          <li>Priority support</li>
+          <li>Custom watermarking</li>
+          <li>Legal reporting suite</li>
+        </ul>
+        <button class="btn btn-ghost" onclick="showRegister()">Contact sales</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="logo" style="margin-bottom:.8rem;display:inline-block">⬡ ImageShield</div>
+  <p>© 2025 ImageShield. All rights reserved. Protecting creators worldwide.</p>
+</footer>
+</div><!-- /#landing -->
+
+<!-- ═════════════════════════════════════════════════ DASHBOARD ═════ -->
+<div id="dashboard">
+<nav>
+  <div class="logo">⬡ ImageShield</div>
+  <div class="nav-links" id="user-nav">
+    <span id="user-email" style="color:var(--muted);font-size:.85rem"></span>
+    <button class="btn btn-ghost btn-sm" onclick="uploadModal.showModal()">+ Register Image</button>
+    <button class="btn btn-ghost btn-sm" onclick="logout()">Log out</button>
+  </div>
+</nav>
+
+<div class="dash-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <a class="side-item active" onclick="showTab('overview')" href="#"><span class="icon">🏠</span>Overview</a>
+    <a class="side-item" onclick="showTab('images')" href="#"><span class="icon">🖼️</span>My Images</a>
+    <a class="side-item" onclick="showTab('licences')" href="#"><span class="icon">🔑</span>Licences</a>
+    <a class="side-item" onclick="showTab('violations')" href="#"><span class="icon">⚠️</span>Violations <span class="chip" style="background:rgba(239,68,68,0.15);color:var(--red);margin-left:auto">3</span></a>
+    <div class="sidebar-label">Settings</div>
+    <a class="side-item" onclick="showTab('profile')" href="#"><span class="icon">👤</span>Profile</a>
+    <a class="side-item" onclick="showTab('security')" href="#"><span class="icon">🔒</span>Security</a>
+  </aside>
+
+  <!-- Main -->
+  <main class="dash-main">
+
+    <!-- Overview -->
+    <div id="tab-overview">
+      <div class="dash-header">
+        <div>
+          <h2>Good morning 👋</h2>
+          <p class="text-muted" style="margin-top:.3rem;font-size:.9rem">Here's what's happening with your images today.</p>
+        </div>
+        <button class="btn btn-primary" onclick="openUpload()">+ Register New Image</button>
+      </div>
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-label">Total Images</div><div class="stat-val">24</div><div class="stat-change up">↑ 3 this week</div></div>
+        <div class="stat-card"><div class="stat-label">Active Licences</div><div class="stat-val">18</div><div class="stat-change up">↑ 2 new</div></div>
+        <div class="stat-card"><div class="stat-label">Violations Detected</div><div class="stat-val text-gold" style="color:var(--gold)">3</div><div class="stat-change down">↓ action needed</div></div>
+        <div class="stat-card"><div class="stat-label">Scans Today</div><div class="stat-val">1,284</div><div class="stat-change up">↑ active</div></div>
+      </div>
+      <h3 style="margin-bottom:1rem;font-size:1.1rem">Recent Activity</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Image</th><th>Event</th><th>Date</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>portrait_001.jpg</td><td>Licence issued to user@gmail.com</td><td>Today, 09:12</td><td><span class="status-dot status-active">Active</span></td></tr>
+            <tr><td>landscape_sea.png</td><td>Unauthorised use detected — Instagram</td><td>Today, 07:44</td><td><span class="status-dot status-pending">Pending action</span></td></tr>
+            <tr><td>brand_logo_v2.png</td><td>Visibility changed to Restricted</td><td>Yesterday</td><td><span class="status-dot status-active">Done</span></td></tr>
+            <tr><td>product_shoot_4.jpg</td><td>New licence request received</td><td>Yesterday</td><td><span class="status-dot status-pending">Awaiting approval</span></td></tr>
+            <tr><td>event_photo_12.jpg</td><td>Scan completed — no violations</td><td>2 days ago</td><td><span class="status-dot status-active">Clear</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- My Images -->
+    <div id="tab-images" class="hidden">
+      <div class="dash-header">
+        <h2>My Images</h2>
+        <button class="btn btn-primary" onclick="openUpload()">+ Register Image</button>
+      </div>
+      <div class="tab-row">
+        <button class="tab active" onclick="filterImages('all',this)">All (24)</button>
+        <button class="tab" onclick="filterImages('public',this)">🟢 Public (9)</button>
+        <button class="tab" onclick="filterImages('private',this)">🔴 Private (10)</button>
+        <button class="tab" onclick="filterImages('restricted',this)">🟡 Restricted (5)</button>
+      </div>
+      <div class="image-grid" id="image-grid">
+        <!-- populated by JS -->
+      </div>
+    </div>
+
+    <!-- Licences -->
+    <div id="tab-licences" class="hidden">
+      <div class="dash-header"><h2>Licence Keys</h2></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Image</th><th>Licence Key</th><th>Issued To</th><th>Mode</th><th>Expires</th><th>Status</th></tr></thead>
+          <tbody id="licence-table">
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Violations -->
+    <div id="tab-violations" class="hidden">
+      <div class="dash-header"><h2>Detected Violations</h2></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Your Image</th><th>Found At</th><th>Platform</th><th>Detected</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>landscape_sea.png</td>
+              <td><a href="#" style="color:var(--accent);font-size:.82rem">instagram.com/p/abc123</a></td>
+              <td>Instagram</td>
+              <td>Today 07:44</td>
+              <td><button class="btn btn-sm" style="background:rgba(239,68,68,0.15);color:var(--red);border:1px solid rgba(239,68,68,0.3);padding:.3rem .7rem;border-radius:6px;cursor:pointer;font-family:'DM Sans',sans-serif">Send DMCA</button></td>
+            </tr>
+            <tr>
+              <td>portrait_001.jpg</td>
+              <td><a href="#" style="color:var(--accent);font-size:.82rem">fakestore.com/gallery</a></td>
+              <td>Website</td>
+              <td>Yesterday</td>
+              <td><button class="btn btn-sm" style="background:rgba(239,68,68,0.15);color:var(--red);border:1px solid rgba(239,68,68,0.3);padding:.3rem .7rem;border-radius:6px;cursor:pointer;font-family:'DM Sans',sans-serif">Send DMCA</button></td>
+            </tr>
+            <tr>
+              <td>event_photo_12.jpg</td>
+              <td><a href="#" style="color:var(--accent);font-size:.82rem">pinterest.com/pin/xyz</a></td>
+              <td>Pinterest</td>
+              <td>2 days ago</td>
+              <td><button class="btn btn-sm" style="background:rgba(245,158,11,0.15);color:var(--gold);border:1px solid rgba(245,158,11,0.3);padding:.3rem .7rem;border-radius:6px;cursor:pointer;font-family:'DM Sans',sans-serif">Under review</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Profile -->
+    <div id="tab-profile" class="hidden">
+      <div class="dash-header"><h2>Profile Settings</h2></div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2rem;max-width:560px">
+        <div class="form-group"><label>Full Name</label><input type="text" value="Demo User"></div>
+        <div class="form-group"><label>Gmail Address</label><input type="email" id="profile-email" value=""></div>
+        <div class="form-group"><label>Phone Number</label><input type="tel" value="+91 98765 43210"></div>
+        <div class="form-group"><label>Plan</label><input type="text" value="Pro — ₹499/month" readonly style="opacity:.6"></div>
+        <button class="btn btn-primary" onclick="alert('Profile saved!')">Save Changes</button>
+      </div>
+    </div>
+
+    <!-- Security -->
+    <div id="tab-security" class="hidden">
+      <div class="dash-header"><h2>Security</h2></div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:2rem;max-width:560px">
+        <h3 style="font-size:1rem;margin-bottom:1rem">Two-Factor Authentication</h3>
+        <div class="alert alert-success">✅ 2FA is enabled on your account via SMS and Gmail OTP.</div>
+        <h3 style="font-size:1rem;margin:1.5rem 0 1rem">Change Password</h3>
+        <div class="form-group"><label>Current Password</label><input type="password" placeholder="••••••••"></div>
+        <div class="form-group"><label>New Password</label><input type="password" placeholder="••••••••"></div>
+        <div class="form-group"><label>Confirm New Password</label><input type="password" placeholder="••••••••"></div>
+        <button class="btn btn-primary" onclick="alert('Password updated!')">Update Password</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+</div><!-- /#dashboard -->
+
+<!-- ═══════════════════════════════════════════════ MODALS ══════════ -->
+
+<!-- Register Modal (multi-step) -->
+<div class="overlay" id="registerOverlay">
+<div class="modal" style="max-width:520px">
+  <button class="modal-close" onclick="closeModal('registerOverlay')">✕</button>
+  <div id="reg-step-1">
+    <h2>Create Account</h2>
+    <p class="sub">Enter your details to get started with ImageShield.</p>
+    <div class="step-indicator">
+      <div class="step active" id="s1">1</div>
+      <div class="step-line" id="sl1"></div>
+      <div class="step" id="s2">2</div>
+      <div class="step-line" id="sl2"></div>
+      <div class="step" id="s3">3</div>
+    </div>
+    <div class="form-group"><label>Full Name</label><input type="text" id="reg-name" placeholder="Your full name"></div>
+    <div class="form-group"><label>Gmail Address</label><input type="email" id="reg-email" placeholder="you@gmail.com"></div>
+    <div class="form-group"><label>Phone Number</label><input type="tel" id="reg-phone" placeholder="+91 99999 00000"></div>
+    <div class="form-group"><label>Password</label><input type="password" id="reg-pass" placeholder="Min 8 characters"></div>
+    <div id="reg-err-1" class="alert alert-error hidden"></div>
+    <button class="btn btn-primary w-full mt-2" onclick="regStep1()">Continue →</button>
+    <p style="text-align:center;margin-top:1rem;font-size:.85rem;color:var(--muted)">Already have an account? <a href="#" onclick="closeModal('registerOverlay');showLogin()" style="color:var(--accent)">Log in</a></p>
+  </div>
+
+  <div id="reg-step-2" class="hidden">
+    <h2>Verify Identity</h2>
+    <p class="sub">We've sent a 6-digit OTP to your Gmail and phone number. Enter it below.</p>
+    <div class="step-indicator">
+      <div class="step done" id="s1b">✓</div>
+      <div class="step-line done" id="sl1b"></div>
+      <div class="step active" id="s2b">2</div>
+      <div class="step-line" id="sl2b"></div>
+      <div class="step" id="s3b">3</div>
+    </div>
+    <div class="alert alert-info">📧 OTP sent to <strong id="otp-target"></strong></div>
+    <div class="otp-inputs">
+      <input type="text" maxlength="1" class="otp-digit" oninput="otpNext(this)">
+      <input type="text" maxlength="1" class="otp-digit" oninput="otpNext(this)">
+      <input type="text" maxlength="1" class="otp-digit" oninput="otpNext(this)">
+      <input type="text" maxlength="1" class="otp-digit" oninput="otpNext(this)">
+      <input type="text" maxlength="1" class="otp-digit" oninput="otpNext(this)">
+      <input type="text" maxlength="1" class="otp-digit" oninput="otpNext(this)">
+    </div>
+    <div id="reg-err-2" class="alert alert-error hidden"></div>
+    <button class="btn btn-primary w-full" onclick="regStep2()">Verify OTP →</button>
+    <p style="text-align:center;margin-top:.8rem;font-size:.82rem;color:var(--muted)">Didn't receive it? <a href="#" style="color:var(--accent)" onclick="alert('OTP resent!')">Resend OTP</a></p>
+  </div>
+
+  <div id="reg-step-3" class="hidden">
+    <h2>🎉 You're all set!</h2>
+    <p class="sub">Your ImageShield account is verified and ready. Start by registering your first image.</p>
+    <div class="alert alert-success">✅ Account verified &amp; created successfully.</div>
+    <div style="background:var(--surface2);border-radius:12px;padding:1.2rem;margin:1rem 0">
+      <p style="font-size:.85rem;color:var(--muted);margin-bottom:.4rem">Your Account ID</p>
+      <code style="font-family:monospace;color:var(--accent2);font-size:.95rem" id="acct-id"></code>
+    </div>
+    <button class="btn btn-primary w-full" onclick="enterDashboard()">Go to Dashboard →</button>
+  </div>
+</div>
+</div>
+
+<!-- Login Modal -->
+<div class="overlay" id="loginOverlay">
+<div class="modal">
+  <button class="modal-close" onclick="closeModal('loginOverlay')">✕</button>
+  <h2>Welcome back</h2>
+  <p class="sub">Sign in to your ImageShield account.</p>
+  <div class="form-group"><label>Gmail Address</label><input type="email" id="login-email" placeholder="you@gmail.com"></div>
+  <div class="form-group"><label>Password</label><input type="password" id="login-pass" placeholder="Your password"></div>
+  <div id="login-err" class="alert alert-error hidden"></div>
+  <button class="btn btn-primary w-full mt-2" onclick="doLogin()">Sign In →</button>
+  <p style="text-align:center;margin-top:1rem;font-size:.85rem;color:var(--muted)">New here? <a href="#" onclick="closeModal('loginOverlay');showRegister()" style="color:var(--accent)">Create account</a></p>
+</div>
+</div>
+
+<!-- Upload / Register Image Modal -->
+<div class="overlay" id="uploadOverlay">
+<div class="modal" style="max-width:500px">
+  <button class="modal-close" onclick="closeModal('uploadOverlay')">✕</button>
+  <h2>Register New Image</h2>
+  <p class="sub">Upload your image and set its protection level to receive a licence key.</p>
+  <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()">
+    <input type="file" id="file-input" accept="image/*" class="hidden" onchange="handleFile(this)">
+    <div class="upload-icon">📁</div>
+    <p><strong>Click to upload</strong> or drag &amp; drop</p>
+    <p style="font-size:.78rem;margin-top:.3rem">PNG, JPG, WEBP up to 50MB</p>
+  </div>
+  <div id="file-preview" class="hidden" style="margin-bottom:1rem">
+    <div style="display:flex;align-items:center;gap:.8rem;background:var(--surface2);padding:.8rem;border-radius:10px;border:1px solid var(--border)">
+      <span style="font-size:1.6rem">🖼️</span>
+      <div><p style="font-size:.9rem" id="file-name"></p><p style="font-size:.78rem;color:var(--muted)" id="file-size"></p></div>
+    </div>
+  </div>
+  <div class="form-group"><label>Image Title</label><input type="text" id="img-title" placeholder="e.g. Brand Logo 2025"></div>
+  <label style="font-size:.85rem;font-weight:500;display:block;margin-bottom:.6rem">Visibility Mode</label>
+  <div class="privacy-options">
+    <div class="priv-opt selected" onclick="selectPrivacy(this,'public')">
+      <div class="priv-icon">🌐</div>
+      <div class="priv-label">Public</div>
+      <div class="priv-desc">Open with attribution</div>
+    </div>
+    <div class="priv-opt" onclick="selectPrivacy(this,'private')">
+      <div class="priv-icon">🔒</div>
+      <div class="priv-label">Private</div>
+      <div class="priv-desc">Owner access only</div>
+    </div>
+    <div class="priv-opt" onclick="selectPrivacy(this,'restricted')">
+      <div class="priv-icon">🛡️</div>
+      <div class="priv-label">Restricted</div>
+      <div class="priv-desc">Approved parties only</div>
+    </div>
+  </div>
+  <div id="upload-msg" class="hidden"></div>
+  <button class="btn btn-primary w-full" onclick="registerImage()" id="reg-img-btn">🔐 Register &amp; Generate Key</button>
+</div>
+</div>
+
+<!-- Licence Key Result Modal -->
+<div class="overlay" id="keyOverlay">
+<div class="modal">
+  <h2>🔑 Licence Key Generated!</h2>
+  <p class="sub">Your image has been registered. Store this key safely — it's your ownership proof.</p>
+  <div class="alert alert-success">✅ Image fingerprinted &amp; added to global registry.</div>
+  <p style="font-size:.85rem;margin-bottom:.4rem;color:var(--muted)">Your Licence Key</p>
+  <div class="license-key-box">
+    <code id="generated-key"></code>
+    <button class="copy-btn" onclick="copyKey()">Copy</button>
+  </div>
+  <div style="margin-top:1.2rem;background:var(--surface2);border-radius:10px;padding:1rem;font-size:.85rem">
+    <p style="color:var(--muted);margin-bottom:.5rem">Image details</p>
+    <p><strong>Title:</strong> <span id="key-title"></span></p>
+    <p style="margin-top:.3rem"><strong>Mode:</strong> <span id="key-mode"></span></p>
+    <p style="margin-top:.3rem"><strong>Registered:</strong> <span id="key-date"></span></p>
+  </div>
+  <button class="btn btn-primary w-full mt-3" onclick="closeModal('keyOverlay');addImageToGrid()">View in Dashboard →</button>
+</div>
+</div>
+
+<script>
+// ── STATE ──────────────────────────────────────────────────────────
+let currentUser = null;
+let selectedPrivacy = 'public';
+let pendingImage = {};
+let images = [
+  {id:1,title:'Portrait 001',mode:'public',key:'IS-F3A9-2B7E-C014-8D56',date:'2025-01-10',thumb:'👤'},
+  {id:2,title:'Landscape Sea',mode:'private',key:'IS-A12C-9E4F-0711-3B8D',date:'2025-01-08',thumb:'🌊'},
+  {id:3,title:'Brand Logo v2',mode:'restricted',key:'IS-77B1-D3A5-E920-4CF6',date:'2025-01-05',thumb:'⬡'},
+  {id:4,title:'Product Shoot 4',mode:'public',key:'IS-2E8D-C590-F136-7A4B',date:'2025-01-03',thumb:'📦'},
+  {id:5,title:'Event Photo 12',mode:'private',key:'IS-B04A-E7F2-1D38-96C5',date:'2024-12-28',thumb:'🎉'},
+  {id:6,title:'Nature Walk',mode:'restricted',key:'IS-D516-3C7B-A09E-28F4',date:'2024-12-20',thumb:'🌿'},
+];
+
+// ── MODALS ─────────────────────────────────────────────────────────
+function showRegister(){document.getElementById('registerOverlay').classList.add('active')}
+function showLogin(){document.getElementById('loginOverlay').classList.add('active')}
+function openUpload(){document.getElementById('uploadOverlay').classList.add('active')}
+function closeModal(id){document.getElementById(id).classList.remove('active')}
+
+// click outside to close
+document.querySelectorAll('.overlay').forEach(o=>{
+  o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('active')})
+})
+
+// ── REGISTER FLOW ──────────────────────────────────────────────────
+function regStep1(){
+  const name=document.getElementById('reg-name').value.trim()
+  const email=document.getElementById('reg-email').value.trim()
+  const phone=document.getElementById('reg-phone').value.trim()
+  const pass=document.getElementById('reg-pass').value
+  const err=document.getElementById('reg-err-1')
+  if(!name||!email||!phone||!pass){showErr(err,'Please fill in all fields.');return}
+  if(!email.includes('@gmail.com')){showErr(err,'Please use a valid Gmail address.');return}
+  if(pass.length<8){showErr(err,'Password must be at least 8 characters.');return}
+  err.classList.add('hidden')
+  document.getElementById('reg-step-1').classList.add('hidden')
+  document.getElementById('reg-step-2').classList.remove('hidden')
+  document.getElementById('otp-target').textContent=email
+  document.querySelectorAll('.otp-digit')[0].focus()
+}
+
+function regStep2(){
+  const digits=[...document.querySelectorAll('.otp-digit')].map(i=>i.value)
+  const err=document.getElementById('reg-err-2')
+  if(digits.some(d=>!d)){showErr(err,'Please enter the complete 6-digit OTP.');return}
+  // Simulate: accept any 6 digits
+  err.classList.add('hidden')
+  currentUser={
+    name:document.getElementById('reg-name').value,
+    email:document.getElementById('reg-email').value,
+    phone:document.getElementById('reg-phone').value
+  }
+  document.getElementById('acct-id').textContent='IS-'+Math.random().toString(36).substr(2,8).toUpperCase()
+  document.getElementById('reg-step-2').classList.add('hidden')
+  document.getElementById('reg-step-3').classList.remove('hidden')
+}
+
+function otpNext(el){
+  el.value=el.value.replace(/[^0-9]/g,'')
+  if(el.value&&el.nextElementSibling&&el.nextElementSibling.classList.contains('otp-digit'))
+    el.nextElementSibling.focus()
+}
+
+// ── LOGIN ──────────────────────────────────────────────────────────
+function doLogin(){
+  const email=document.getElementById('login-email').value.trim()
+  const pass=document.getElementById('login-pass').value
+  const err=document.getElementById('login-err')
+  if(!email||!pass){showErr(err,'Please enter email and password.');return}
+  if(!email.includes('@')){showErr(err,'Invalid email address.');return}
+  err.classList.add('hidden')
+  currentUser={name:'Demo User',email}
+  closeModal('loginOverlay')
+  enterDashboard()
+}
+
+function enterDashboard(){
+  closeModal('registerOverlay')
+  document.getElementById('landing').style.display='none'
+  document.getElementById('dashboard').style.display='block'
+  document.getElementById('user-email').textContent=currentUser?.email||''
+  document.getElementById('profile-email').value=currentUser?.email||''
+  renderImages()
+  renderLicences()
+}
+
+function logout(){
+  currentUser=null
+  document.getElementById('landing').style.display='block'
+  document.getElementById('dashboard').style.display='none'
+}
+
+// ── DASHBOARD TABS ─────────────────────────────────────────────────
+function showTab(id){
+  document.querySelectorAll('[id^="tab-"]').forEach(t=>t.classList.add('hidden'))
+  document.getElementById('tab-'+id).classList.remove('hidden')
+  document.querySelectorAll('.side-item').forEach(s=>s.classList.remove('active'))
+  event.currentTarget.classList.add('active')
+}
+
+// ── IMAGES ────────────────────────────────────────────────────────
+function renderImages(filter='all'){
+  const grid=document.getElementById('image-grid')
+  const list=filter==='all'?images:images.filter(i=>i.mode===filter)
+  if(!list.length){grid.innerHTML='<div class="empty-state"><div class="empty-icon">🖼️</div><p>No images found. Register your first image!</p></div>';return}
+  grid.innerHTML=list.map(img=>`
+    <div class="img-card">
+      <div class="img-thumb">
+        <span style="font-size:3rem">${img.thumb}</span>
+        <span class="img-badge badge-${img.mode}">${img.mode}</span>
+      </div>
+      <div class="img-info">
+        <h4>${img.title}</h4>
+        <div class="img-meta"><span>${img.date}</span><span style="font-family:monospace;font-size:.7rem">${img.key.substr(0,12)}…</span></div>
+        <div class="license-key-box" style="margin-top:.6rem;padding:.6rem .8rem">
+          <code style="font-size:.72rem">${img.key}</code>
+          <button class="copy-btn" onclick="navigator.clipboard.writeText('${img.key}');this.textContent='✓'">Copy</button>
+        </div>
+      </div>
+      <div class="img-actions">
+        <button onclick="changeMode(${img.id})">Change Mode</button>
+        <button onclick="shareKey('${img.key}')">Share Key</button>
+        <button onclick="deleteImg(${img.id})">Delete</button>
+      </div>
+    </div>`).join('')
+}
+
+function filterImages(mode,btn){
+  document.querySelectorAll('.tab-row .tab').forEach(t=>t.classList.remove('active'))
+  btn.classList.add('active')
+  renderImages(mode)
+}
+
+function changeMode(id){
+  const modes=['public','private','restricted']
+  const img=images.find(i=>i.id===id)
+  const next=modes[(modes.indexOf(img.mode)+1)%3]
+  img.mode=next
+  renderImages()
+  showToast(`Visibility changed to ${next}`)
+}
+
+function deleteImg(id){
+  if(!confirm('Delete this image registration?'))return
+  images=images.filter(i=>i.id!==id)
+  renderImages()
+  showToast('Image removed from registry')
+}
+
+function shareKey(key){
+  navigator.clipboard.writeText(key).then(()=>showToast('Licence key copied to clipboard!'))
+}
+
+// ── LICENCES ─────────────────────────────────────────────────────
+function renderLicences(){
+  const tb=document.getElementById('licence-table')
+  tb.innerHTML=images.map(img=>`
+    <tr>
+      <td>${img.title}</td>
+      <td><code style="font-family:monospace;font-size:.78rem;color:var(--accent2)">${img.key}</code></td>
+      <td>${currentUser?.email||'you@gmail.com'}</td>
+      <td><span class="img-badge badge-${img.mode}" style="font-size:.72rem">${img.mode}</span></td>
+      <td>Never</td>
+      <td><span class="status-dot status-active">Active</span></td>
+    </tr>`).join('')
+}
+
+// ── UPLOAD / REGISTER IMAGE ────────────────────────────────────────
+function handleFile(input){
+  const file=input.files[0];if(!file)return
+  document.getElementById('file-name').textContent=file.name
+  document.getElementById('file-size').textContent=(file.size/1024).toFixed(1)+' KB'
+  document.getElementById('file-preview').classList.remove('hidden')
+  document.getElementById('upload-zone').style.opacity='.5'
+}
+
+function selectPrivacy(el,mode){
+  document.querySelectorAll('.priv-opt').forEach(o=>o.classList.remove('selected'))
+  el.classList.add('selected')
+  selectedPrivacy=mode
+}
+
+function registerImage(){
+  const title=document.getElementById('img-title').value.trim()
+  const msgEl=document.getElementById('upload-msg')
+  const btn=document.getElementById('reg-img-btn')
+  if(!title){showErr2(msgEl,'Please enter an image title.');return}
+  btn.innerHTML='<span class="spinner"></span> Registering…'
+  btn.disabled=true
+  setTimeout(()=>{
+    const key='IS-'+Array.from({length:4},()=>Math.random().toString(36).substr(2,4).toUpperCase()).join('-')
+    pendingImage={title,mode:selectedPrivacy,key,date:new Date().toISOString().split('T')[0],thumb:'🖼️',id:Date.now()}
+    document.getElementById('generated-key').textContent=key
+    document.getElementById('key-title').textContent=title
+    document.getElementById('key-mode').textContent=selectedPrivacy.charAt(0).toUpperCase()+selectedPrivacy.slice(1)
+    document.getElementById('key-date').textContent=pendingImage.date
+    closeModal('uploadOverlay')
+    document.getElementById('keyOverlay').classList.add('active')
+    btn.innerHTML='🔐 Register &amp; Generate Key'
+    btn.disabled=false
+    msgEl.classList.add('hidden')
+    document.getElementById('img-title').value=''
+    document.getElementById('file-preview').classList.add('hidden')
+    document.getElementById('upload-zone').style.opacity='1'
+    document.getElementById('file-input').value=''
+  },1800)
+}
+
+function addImageToGrid(){
+  images.unshift(pendingImage)
+  renderImages()
+  renderLicences()
+  showTab('images')
+}
+
+function copyKey(){
+  navigator.clipboard.writeText(document.getElementById('generated-key').textContent)
+  showToast('Key copied!')
+}
+
+// ── UTILS ─────────────────────────────────────────────────────────
+function showErr(el,msg){el.textContent=msg;el.classList.remove('hidden')}
+function showErr2(el,msg){el.innerHTML='<span>⚠️ '+msg+'</span>';el.className='alert alert-error';el.classList.remove('hidden')}
+
+let toastTO;
+function showToast(msg){
+  let t=document.getElementById('toast')
+  if(!t){t=document.createElement('div');t.id='toast';t.style.cssText='position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#10b981;color:#fff;padding:.7rem 1.5rem;border-radius:10px;z-index:9999;font-family:DM Sans,sans-serif;font-size:.9rem;box-shadow:0 4px 20px rgba(0,0,0,0.4);transition:opacity .3s';document.body.appendChild(t)}
+  t.textContent=msg;t.style.opacity='1'
+  clearTimeout(toastTO);toastTO=setTimeout(()=>{t.style.opacity='0'},2800)
+}
+
+// init image grid
+renderImages()
+</script>
+</body>
+</html>
